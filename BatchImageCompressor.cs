@@ -24,7 +24,13 @@ namespace BatchImageCompressor
         }
         #endregion
 
+        private FolderBrowserDialog mProblematicBrowseDialog;
+        private NumericUpDown mQualityTextBox;
         private ConcurrentQueue<TaskFile> TaskFiles = new ConcurrentQueue<TaskFile>();
+
+        public string SavePath1 { get; set; }
+        public string SavePath2 { get; set; }
+        public string SavePath3 { get; set; }
 
         #region Private Methods
         private void InitializeComponent()
@@ -42,6 +48,7 @@ namespace BatchImageCompressor
             this.mProblematicBrowseButton = new System.Windows.Forms.Button();
             this.mProblematicBrowseDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.mResolutionGroupBox = new System.Windows.Forms.GroupBox();
+            this.mQualityTextBox = new System.Windows.Forms.NumericUpDown();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.mResolutionPercentRadioButton = new System.Windows.Forms.RadioButton();
@@ -49,30 +56,30 @@ namespace BatchImageCompressor
             this.mResolutionDimensionRadioButton = new System.Windows.Forms.RadioButton();
             this.mResolutionPercentTextBox = new System.Windows.Forms.TextBox();
             this.mQualityLabel = new System.Windows.Forms.Label();
-            this.mQualityTextBox = new System.Windows.Forms.TextBox();
             this.mCompressButton = new System.Windows.Forms.Button();
             this.mBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.progressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.size = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.mResolutionGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mQualityTextBox)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // mInputLabel
@@ -88,7 +95,6 @@ namespace BatchImageCompressor
             // 
             this.mInputTextBox.Location = new System.Drawing.Point(73, 15);
             this.mInputTextBox.Name = "mInputTextBox";
-            this.mInputTextBox.ReadOnly = true;
             this.mInputTextBox.Size = new System.Drawing.Size(438, 21);
             this.mInputTextBox.TabIndex = 0;
             this.mInputTextBox.TabStop = false;
@@ -117,7 +123,6 @@ namespace BatchImageCompressor
             // 
             this.mOutputTextBox.Location = new System.Drawing.Point(73, 60);
             this.mOutputTextBox.Name = "mOutputTextBox";
-            this.mOutputTextBox.ReadOnly = true;
             this.mOutputTextBox.Size = new System.Drawing.Size(438, 21);
             this.mOutputTextBox.TabIndex = 0;
             this.mOutputTextBox.TabStop = false;
@@ -146,7 +151,6 @@ namespace BatchImageCompressor
             // 
             this.mProblematicTextBox.Location = new System.Drawing.Point(73, 107);
             this.mProblematicTextBox.Name = "mProblematicTextBox";
-            this.mProblematicTextBox.ReadOnly = true;
             this.mProblematicTextBox.Size = new System.Drawing.Size(438, 21);
             this.mProblematicTextBox.TabIndex = 0;
             this.mProblematicTextBox.TabStop = false;
@@ -164,6 +168,7 @@ namespace BatchImageCompressor
             // 
             // mResolutionGroupBox
             // 
+            this.mResolutionGroupBox.Controls.Add(this.mQualityTextBox);
             this.mResolutionGroupBox.Controls.Add(this.checkBox2);
             this.mResolutionGroupBox.Controls.Add(this.checkBox1);
             this.mResolutionGroupBox.Controls.Add(this.mResolutionPercentRadioButton);
@@ -171,7 +176,6 @@ namespace BatchImageCompressor
             this.mResolutionGroupBox.Controls.Add(this.mResolutionDimensionRadioButton);
             this.mResolutionGroupBox.Controls.Add(this.mResolutionPercentTextBox);
             this.mResolutionGroupBox.Controls.Add(this.mQualityLabel);
-            this.mResolutionGroupBox.Controls.Add(this.mQualityTextBox);
             this.mResolutionGroupBox.Location = new System.Drawing.Point(12, 174);
             this.mResolutionGroupBox.Name = "mResolutionGroupBox";
             this.mResolutionGroupBox.Size = new System.Drawing.Size(644, 161);
@@ -179,10 +183,22 @@ namespace BatchImageCompressor
             this.mResolutionGroupBox.TabStop = false;
             this.mResolutionGroupBox.Text = "配置";
             // 
+            // mQualityTextBox
+            // 
+            this.mQualityTextBox.Location = new System.Drawing.Point(241, 47);
+            this.mQualityTextBox.Name = "mQualityTextBox";
+            this.mQualityTextBox.Size = new System.Drawing.Size(77, 21);
+            this.mQualityTextBox.TabIndex = 10;
+            this.mQualityTextBox.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            // 
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(494, 105);
+            this.checkBox2.Location = new System.Drawing.Point(478, 104);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(144, 16);
             this.checkBox2.TabIndex = 9;
@@ -195,7 +211,7 @@ namespace BatchImageCompressor
             this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(400, 105);
+            this.checkBox1.Location = new System.Drawing.Point(388, 104);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(72, 16);
             this.checkBox1.TabIndex = 8;
@@ -205,7 +221,7 @@ namespace BatchImageCompressor
             // mResolutionPercentRadioButton
             // 
             this.mResolutionPercentRadioButton.AutoSize = true;
-            this.mResolutionPercentRadioButton.Location = new System.Drawing.Point(36, 47);
+            this.mResolutionPercentRadioButton.Location = new System.Drawing.Point(19, 47);
             this.mResolutionPercentRadioButton.Name = "mResolutionPercentRadioButton";
             this.mResolutionPercentRadioButton.Size = new System.Drawing.Size(65, 16);
             this.mResolutionPercentRadioButton.TabIndex = 3;
@@ -215,7 +231,7 @@ namespace BatchImageCompressor
             // 
             // mResolutionDimensionTextBox
             // 
-            this.mResolutionDimensionTextBox.Location = new System.Drawing.Point(107, 100);
+            this.mResolutionDimensionTextBox.Location = new System.Drawing.Point(90, 99);
             this.mResolutionDimensionTextBox.MaxLength = 4;
             this.mResolutionDimensionTextBox.Name = "mResolutionDimensionTextBox";
             this.mResolutionDimensionTextBox.Size = new System.Drawing.Size(70, 21);
@@ -225,7 +241,7 @@ namespace BatchImageCompressor
             // 
             this.mResolutionDimensionRadioButton.AutoSize = true;
             this.mResolutionDimensionRadioButton.Checked = true;
-            this.mResolutionDimensionRadioButton.Location = new System.Drawing.Point(36, 100);
+            this.mResolutionDimensionRadioButton.Location = new System.Drawing.Point(19, 100);
             this.mResolutionDimensionRadioButton.Name = "mResolutionDimensionRadioButton";
             this.mResolutionDimensionRadioButton.Size = new System.Drawing.Size(65, 16);
             this.mResolutionDimensionRadioButton.TabIndex = 4;
@@ -237,7 +253,7 @@ namespace BatchImageCompressor
             // mResolutionPercentTextBox
             // 
             this.mResolutionPercentTextBox.Enabled = false;
-            this.mResolutionPercentTextBox.Location = new System.Drawing.Point(107, 46);
+            this.mResolutionPercentTextBox.Location = new System.Drawing.Point(90, 46);
             this.mResolutionPercentTextBox.MaxLength = 3;
             this.mResolutionPercentTextBox.Name = "mResolutionPercentTextBox";
             this.mResolutionPercentTextBox.Size = new System.Drawing.Size(70, 21);
@@ -251,14 +267,6 @@ namespace BatchImageCompressor
             this.mQualityLabel.Size = new System.Drawing.Size(35, 12);
             this.mQualityLabel.TabIndex = 0;
             this.mQualityLabel.Text = "品质:";
-            // 
-            // mQualityTextBox
-            // 
-            this.mQualityTextBox.Location = new System.Drawing.Point(241, 47);
-            this.mQualityTextBox.MaxLength = 3;
-            this.mQualityTextBox.Name = "mQualityTextBox";
-            this.mQualityTextBox.Size = new System.Drawing.Size(70, 21);
-            this.mQualityTextBox.TabIndex = 7;
             // 
             // mCompressButton
             // 
@@ -327,6 +335,16 @@ namespace BatchImageCompressor
             this.tabPage1.Text = "选项";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(599, 13);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(60, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "部分";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.dataGridView1);
@@ -337,35 +355,6 @@ namespace BatchImageCompressor
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "文件";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.textBox1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(670, 354);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "日志";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox1.Location = new System.Drawing.Point(0, 0);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(670, 354);
-            this.textBox1.TabIndex = 0;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(599, 13);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(60, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "部分";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // dataGridView1
             // 
@@ -381,10 +370,6 @@ namespace BatchImageCompressor
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(664, 348);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // name
             // 
@@ -409,6 +394,30 @@ namespace BatchImageCompressor
             this.Id.Name = "Id";
             this.Id.Visible = false;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.textBox1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(670, 354);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "日志";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox1.Location = new System.Drawing.Point(0, 0);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(670, 354);
+            this.textBox1.TabIndex = 0;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // BatchImageCompressor
             // 
             this.ClientSize = new System.Drawing.Size(696, 479);
@@ -423,15 +432,16 @@ namespace BatchImageCompressor
             this.Load += new System.EventHandler(this.BatchImageCompressorForm_Load);
             this.mResolutionGroupBox.ResumeLayout(false);
             this.mResolutionGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mQualityTextBox)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -458,6 +468,11 @@ namespace BatchImageCompressor
 
         private void InputBrowseButton_Click(object sender, EventArgs e)
         {
+            if (Directory.Exists(mInputTextBox.Text))
+            {
+                mInputBrowseDialog.SelectedPath = mInputTextBox.Text;
+            }
+
             if (mInputBrowseDialog.ShowDialog() == DialogResult.OK)
             {
                 mInputTextBox.Text = mInputBrowseDialog.SelectedPath;
@@ -466,6 +481,12 @@ namespace BatchImageCompressor
 
         private void OutputBrowseButton_Click(object sender, EventArgs e)
         {
+            if (Directory.Exists(mOutputTextBox.Text))
+            {
+                mOutputBrowseDialog.SelectedPath = mOutputTextBox.Text;
+            }
+
+
             if (mOutputBrowseDialog.ShowDialog() == DialogResult.OK)
             {
                 mOutputTextBox.Text = mOutputBrowseDialog.SelectedPath;
@@ -474,6 +495,10 @@ namespace BatchImageCompressor
 
         private void mProblematicBrowseButton_Click(object sender, EventArgs e)
         {
+            if (Directory.Exists(mProblematicTextBox.Text))
+            {
+                mProblematicBrowseDialog.SelectedPath = mProblematicTextBox.Text;
+            }
             if (mProblematicBrowseDialog.ShowDialog() == DialogResult.OK)
             {
                 mProblematicTextBox.Text = mProblematicBrowseDialog.SelectedPath;
@@ -521,6 +546,7 @@ namespace BatchImageCompressor
 
         private void mBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            //重置进度
             ResetStatistics(mInputTextBox.Text);
 
             //压缩
@@ -597,21 +623,35 @@ namespace BatchImageCompressor
                }
            );
         }
+
+
         private String ValidateUserInput()
         {
             if (String.IsNullOrEmpty(mInputTextBox.Text))
             {
                 return "输入目录不能为空！请选择要压缩其图像的有效目录.";
             }
-
+            if (!Directory.Exists(mInputTextBox.Text))
+            {
+                return "文件目录不存在.";
+            }
+                 
             if (String.IsNullOrEmpty(mOutputTextBox.Text))
             {
                 return "输出目录不能为空！请选择要存储压缩图像的有效目录.";
+            }
+            if (!Directory.Exists(mOutputTextBox.Text))
+            {
+                return "输出目录不存在.";
             }
 
             if (String.IsNullOrEmpty(mProblematicTextBox.Text))
             {
                 return "有问题的目录不能为空！请选择一个有效的目录，将所有有问题的图像复制到其中。如果批处理图像压缩器由于任何原因未能压缩图像，则认为这些图像有问题。";
+            }
+            if (!Directory.Exists(mProblematicTextBox.Text))
+            {
+                return "转移目录不存在.";
             }
 
             if (Directory.EnumerateFileSystemEntries(mOutputTextBox.Text).GetEnumerator().MoveNext() && !this.checkBox1.Checked)
@@ -772,13 +812,12 @@ namespace BatchImageCompressor
                     }
                     finally 
                     {
-                        this.TaskFiles.TryDequeue(out TaskFile t);
-
                         //更新GridView
                         Task.Run(() =>
                         {
-                            LogText($"更新GridView {t.Name}");
-                            InvokeRemoveGridView(this.dataGridView1, t);
+                            //this.TaskFiles.TryDequeue(out TaskFile t);
+                            LogText($"更新GridView {file.Name}");
+                            InvokeRemoveGridView(this.dataGridView1, file);
                         });
                     }
                 }
@@ -892,8 +931,6 @@ namespace BatchImageCompressor
                     );
                 }
             }
-
-          
         }
 
         private void AdjustResolution(ref int width, ref int height)
@@ -1054,7 +1091,7 @@ namespace BatchImageCompressor
 
         private const int mDefaultResolutionDimension = 1400;
         private const int mDefaultResolutionPercent = 65;
-        private const int mDefaultQuality = 85;
+        private const int mDefaultQuality = 60;
 
         private Label mInputLabel;
         private TextBox mInputTextBox;
@@ -1067,14 +1104,12 @@ namespace BatchImageCompressor
         private Label mProblematicLabel;
         private TextBox mProblematicTextBox;
         private Button mProblematicBrowseButton;
-        private FolderBrowserDialog mProblematicBrowseDialog;
         private GroupBox mResolutionGroupBox;
         private RadioButton mResolutionDimensionRadioButton;
         private TextBox mResolutionDimensionTextBox;
         private RadioButton mResolutionPercentRadioButton;
         private TextBox mResolutionPercentTextBox;
         private Label mQualityLabel;
-        private TextBox mQualityTextBox;
         private Button mCompressButton;
         private BackgroundWorker mBackgroundWorker;
 
@@ -1109,6 +1144,12 @@ namespace BatchImageCompressor
         private void Addfiles()
         {
             DialogResult result;
+
+            if (Directory.Exists(mInputTextBox.Text))
+            {
+                this.openFileDialog1.InitialDirectory = mInputTextBox.Text;
+            }
+
             this.openFileDialog1.Multiselect = true;
             this.openFileDialog1.DefaultExt = ".jpg";
             this.openFileDialog1.AddExtension = true;
@@ -1276,8 +1317,6 @@ namespace BatchImageCompressor
                 LogText(ex.Message + ";" + ex.StackTrace);
             }
         }
-
-
     }
 
 
