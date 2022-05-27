@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq;
 using System.Collections.Concurrent;
+using System.Collections;
+using FluentScheduler;
 
 namespace Dorisoy.BICompressor
 {
@@ -19,6 +21,13 @@ namespace Dorisoy.BICompressor
     /// </summary>
     public partial class BICompressor : Form
     {
+        public bool IsRunning = true;
+        private string Timer = "00:00";
+        private int TimeInterval = 5;
+        private Button button2;
+        private TextBox textBox2;
+        private int Weekday = 1;
+
         #region Public Methods
         public BICompressor()
         {
@@ -29,6 +38,21 @@ namespace Dorisoy.BICompressor
 
         private FolderBrowserDialog mProblematicBrowseDialog;
         private NumericUpDown mQualityTextBox;
+        private RadioButton radioButton2;
+        private RadioButton radioButton1;
+        private NumericUpDown numericUpDown1;
+        private Label label2;
+        private ComboBox comboBox1;
+        private Label label1;
+        private Label label3;
+        private GroupBox groupBox1;
+        private RadioButton radioButton7;
+        private RadioButton radioButton6;
+        private RadioButton radioButton5;
+        private RadioButton radioButton4;
+        private RadioButton radioButton3;
+        private RadioButton radioButton8;
+        private RadioButton radioButton9;
         private ConcurrentQueue<TaskFile> TaskFiles = new ConcurrentQueue<TaskFile>();
 
         public string SavePath1 { get; set; }
@@ -38,6 +62,8 @@ namespace Dorisoy.BICompressor
         #region Private Methods
         private void InitializeComponent()
         {
+
+
             this.mInputLabel = new System.Windows.Forms.Label();
             this.mInputTextBox = new System.Windows.Forms.TextBox();
             this.mInputBrowseButton = new System.Windows.Forms.Button();
@@ -51,6 +77,11 @@ namespace Dorisoy.BICompressor
             this.mProblematicBrowseButton = new System.Windows.Forms.Button();
             this.mProblematicBrowseDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.mResolutionGroupBox = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.mQualityTextBox = new System.Windows.Forms.NumericUpDown();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
@@ -65,6 +96,16 @@ namespace Dorisoy.BICompressor
             this.progressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioButton7 = new System.Windows.Forms.RadioButton();
+            this.radioButton6 = new System.Windows.Forms.RadioButton();
+            this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton8 = new System.Windows.Forms.RadioButton();
+            this.radioButton9 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.button1 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -75,11 +116,15 @@ namespace Dorisoy.BICompressor
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.mResolutionGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mQualityTextBox)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage3.SuspendLayout();
@@ -88,24 +133,25 @@ namespace Dorisoy.BICompressor
             // mInputLabel
             // 
             this.mInputLabel.AutoSize = true;
-            this.mInputLabel.Location = new System.Drawing.Point(8, 18);
+            this.mInputLabel.Location = new System.Drawing.Point(10, 63);
             this.mInputLabel.Name = "mInputLabel";
             this.mInputLabel.Size = new System.Drawing.Size(59, 12);
             this.mInputLabel.TabIndex = 0;
-            this.mInputLabel.Text = "文件目录:";
+            this.mInputLabel.Text = "压缩目录:";
+            this.mInputLabel.Click += new System.EventHandler(this.mInputLabel_Click);
             // 
             // mInputTextBox
             // 
-            this.mInputTextBox.Location = new System.Drawing.Point(73, 15);
+            this.mInputTextBox.Location = new System.Drawing.Point(75, 60);
             this.mInputTextBox.Name = "mInputTextBox";
             this.mInputTextBox.Size = new System.Drawing.Size(438, 21);
             this.mInputTextBox.TabIndex = 0;
             this.mInputTextBox.TabStop = false;
-            this.mInputTextBox.Text = "D:\\PICM\\04-ipt";
+            this.mInputTextBox.Text = "D:\\BIC-input";
             // 
             // mInputBrowseButton
             // 
-            this.mInputBrowseButton.Location = new System.Drawing.Point(533, 13);
+            this.mInputBrowseButton.Location = new System.Drawing.Point(535, 58);
             this.mInputBrowseButton.Name = "mInputBrowseButton";
             this.mInputBrowseButton.Size = new System.Drawing.Size(60, 23);
             this.mInputBrowseButton.TabIndex = 1;
@@ -116,24 +162,24 @@ namespace Dorisoy.BICompressor
             // mOutputLabel
             // 
             this.mOutputLabel.AutoSize = true;
-            this.mOutputLabel.Location = new System.Drawing.Point(20, 63);
+            this.mOutputLabel.Location = new System.Drawing.Point(10, 100);
             this.mOutputLabel.Name = "mOutputLabel";
-            this.mOutputLabel.Size = new System.Drawing.Size(47, 12);
+            this.mOutputLabel.Size = new System.Drawing.Size(59, 12);
             this.mOutputLabel.TabIndex = 0;
-            this.mOutputLabel.Text = "保存到:";
+            this.mOutputLabel.Text = "压缩输出:";
             // 
             // mOutputTextBox
             // 
-            this.mOutputTextBox.Location = new System.Drawing.Point(73, 60);
+            this.mOutputTextBox.Location = new System.Drawing.Point(75, 96);
             this.mOutputTextBox.Name = "mOutputTextBox";
             this.mOutputTextBox.Size = new System.Drawing.Size(438, 21);
             this.mOutputTextBox.TabIndex = 0;
             this.mOutputTextBox.TabStop = false;
-            this.mOutputTextBox.Text = "D:\\PICM\\out";
+            this.mOutputTextBox.Text = "D:\\BIC-out";
             // 
             // mOutputBrowseButton
             // 
-            this.mOutputBrowseButton.Location = new System.Drawing.Point(533, 60);
+            this.mOutputBrowseButton.Location = new System.Drawing.Point(535, 96);
             this.mOutputBrowseButton.Name = "mOutputBrowseButton";
             this.mOutputBrowseButton.Size = new System.Drawing.Size(123, 21);
             this.mOutputBrowseButton.TabIndex = 2;
@@ -144,24 +190,24 @@ namespace Dorisoy.BICompressor
             // mProblematicLabel
             // 
             this.mProblematicLabel.AutoSize = true;
-            this.mProblematicLabel.Location = new System.Drawing.Point(8, 110);
+            this.mProblematicLabel.Location = new System.Drawing.Point(10, 135);
             this.mProblematicLabel.Name = "mProblematicLabel";
             this.mProblematicLabel.Size = new System.Drawing.Size(59, 12);
             this.mProblematicLabel.TabIndex = 0;
-            this.mProblematicLabel.Text = "压缩失败:";
+            this.mProblematicLabel.Text = "失败转移:";
             // 
             // mProblematicTextBox
             // 
-            this.mProblematicTextBox.Location = new System.Drawing.Point(73, 107);
+            this.mProblematicTextBox.Location = new System.Drawing.Point(75, 131);
             this.mProblematicTextBox.Name = "mProblematicTextBox";
             this.mProblematicTextBox.Size = new System.Drawing.Size(438, 21);
             this.mProblematicTextBox.TabIndex = 0;
             this.mProblematicTextBox.TabStop = false;
-            this.mProblematicTextBox.Text = "D:\\PICM\\pr";
+            this.mProblematicTextBox.Text = "D:\\BIC-pr";
             // 
             // mProblematicBrowseButton
             // 
-            this.mProblematicBrowseButton.Location = new System.Drawing.Point(533, 107);
+            this.mProblematicBrowseButton.Location = new System.Drawing.Point(535, 131);
             this.mProblematicBrowseButton.Name = "mProblematicBrowseButton";
             this.mProblematicBrowseButton.Size = new System.Drawing.Size(123, 21);
             this.mProblematicBrowseButton.TabIndex = 3;
@@ -171,6 +217,11 @@ namespace Dorisoy.BICompressor
             // 
             // mResolutionGroupBox
             // 
+            this.mResolutionGroupBox.Controls.Add(this.label3);
+            this.mResolutionGroupBox.Controls.Add(this.numericUpDown1);
+            this.mResolutionGroupBox.Controls.Add(this.label2);
+            this.mResolutionGroupBox.Controls.Add(this.comboBox1);
+            this.mResolutionGroupBox.Controls.Add(this.label1);
             this.mResolutionGroupBox.Controls.Add(this.mQualityTextBox);
             this.mResolutionGroupBox.Controls.Add(this.checkBox2);
             this.mResolutionGroupBox.Controls.Add(this.checkBox1);
@@ -179,16 +230,64 @@ namespace Dorisoy.BICompressor
             this.mResolutionGroupBox.Controls.Add(this.mResolutionDimensionRadioButton);
             this.mResolutionGroupBox.Controls.Add(this.mResolutionPercentTextBox);
             this.mResolutionGroupBox.Controls.Add(this.mQualityLabel);
-            this.mResolutionGroupBox.Location = new System.Drawing.Point(12, 174);
+            this.mResolutionGroupBox.Location = new System.Drawing.Point(14, 250);
             this.mResolutionGroupBox.Name = "mResolutionGroupBox";
-            this.mResolutionGroupBox.Size = new System.Drawing.Size(644, 161);
+            this.mResolutionGroupBox.Size = new System.Drawing.Size(644, 99);
             this.mResolutionGroupBox.TabIndex = 5;
             this.mResolutionGroupBox.TabStop = false;
-            this.mResolutionGroupBox.Text = "配置";
+            this.mResolutionGroupBox.Text = "选项";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(582, 33);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 12);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "/分钟";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Enabled = false;
+            this.numericUpDown1.Location = new System.Drawing.Point(473, 31);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(100, 21);
+            this.numericUpDown1.TabIndex = 14;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(385, 34);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "定时间隔：";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Enabled = false;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(252, 31);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(77, 20);
+            this.comboBox1.TabIndex = 12;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(181, 39);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "执行时间：";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // mQualityTextBox
             // 
-            this.mQualityTextBox.Location = new System.Drawing.Point(241, 47);
+            this.mQualityTextBox.Location = new System.Drawing.Point(252, 67);
             this.mQualityTextBox.Name = "mQualityTextBox";
             this.mQualityTextBox.Size = new System.Drawing.Size(77, 21);
             this.mQualityTextBox.TabIndex = 10;
@@ -197,15 +296,16 @@ namespace Dorisoy.BICompressor
             0,
             0,
             0});
+            this.mQualityTextBox.ValueChanged += new System.EventHandler(this.mQualityTextBox_ValueChanged);
             // 
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(478, 104);
+            this.checkBox2.Location = new System.Drawing.Point(473, 67);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(144, 16);
+            this.checkBox2.Size = new System.Drawing.Size(168, 16);
             this.checkBox2.TabIndex = 9;
-            this.checkBox2.Text = "压缩完是否删除源文件";
+            this.checkBox2.Text = "压缩完是否删除源目录文件";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // checkBox1
@@ -214,7 +314,7 @@ namespace Dorisoy.BICompressor
             this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(388, 104);
+            this.checkBox1.Location = new System.Drawing.Point(378, 68);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(72, 16);
             this.checkBox1.TabIndex = 8;
@@ -224,17 +324,17 @@ namespace Dorisoy.BICompressor
             // mResolutionPercentRadioButton
             // 
             this.mResolutionPercentRadioButton.AutoSize = true;
-            this.mResolutionPercentRadioButton.Location = new System.Drawing.Point(19, 47);
+            this.mResolutionPercentRadioButton.Location = new System.Drawing.Point(18, 35);
             this.mResolutionPercentRadioButton.Name = "mResolutionPercentRadioButton";
-            this.mResolutionPercentRadioButton.Size = new System.Drawing.Size(65, 16);
+            this.mResolutionPercentRadioButton.Size = new System.Drawing.Size(71, 16);
             this.mResolutionPercentRadioButton.TabIndex = 3;
-            this.mResolutionPercentRadioButton.Text = "按比例:";
+            this.mResolutionPercentRadioButton.Text = "按比例：";
             this.mResolutionPercentRadioButton.UseVisualStyleBackColor = true;
             this.mResolutionPercentRadioButton.CheckedChanged += new System.EventHandler(this.ResolutionPercentRadioButton_CheckedChanged);
             // 
             // mResolutionDimensionTextBox
             // 
-            this.mResolutionDimensionTextBox.Location = new System.Drawing.Point(90, 99);
+            this.mResolutionDimensionTextBox.Location = new System.Drawing.Point(89, 67);
             this.mResolutionDimensionTextBox.MaxLength = 4;
             this.mResolutionDimensionTextBox.Name = "mResolutionDimensionTextBox";
             this.mResolutionDimensionTextBox.Size = new System.Drawing.Size(70, 21);
@@ -244,19 +344,19 @@ namespace Dorisoy.BICompressor
             // 
             this.mResolutionDimensionRadioButton.AutoSize = true;
             this.mResolutionDimensionRadioButton.Checked = true;
-            this.mResolutionDimensionRadioButton.Location = new System.Drawing.Point(19, 100);
+            this.mResolutionDimensionRadioButton.Location = new System.Drawing.Point(18, 68);
             this.mResolutionDimensionRadioButton.Name = "mResolutionDimensionRadioButton";
-            this.mResolutionDimensionRadioButton.Size = new System.Drawing.Size(65, 16);
+            this.mResolutionDimensionRadioButton.Size = new System.Drawing.Size(71, 16);
             this.mResolutionDimensionRadioButton.TabIndex = 4;
             this.mResolutionDimensionRadioButton.TabStop = true;
-            this.mResolutionDimensionRadioButton.Text = "按尺寸:";
+            this.mResolutionDimensionRadioButton.Text = "按尺寸：";
             this.mResolutionDimensionRadioButton.UseVisualStyleBackColor = true;
             this.mResolutionDimensionRadioButton.CheckedChanged += new System.EventHandler(this.ResolutionDimensionRadioButton_CheckedChanged);
             // 
             // mResolutionPercentTextBox
             // 
             this.mResolutionPercentTextBox.Enabled = false;
-            this.mResolutionPercentTextBox.Location = new System.Drawing.Point(90, 46);
+            this.mResolutionPercentTextBox.Location = new System.Drawing.Point(89, 34);
             this.mResolutionPercentTextBox.MaxLength = 3;
             this.mResolutionPercentTextBox.Name = "mResolutionPercentTextBox";
             this.mResolutionPercentTextBox.Size = new System.Drawing.Size(70, 21);
@@ -265,15 +365,16 @@ namespace Dorisoy.BICompressor
             // mQualityLabel
             // 
             this.mQualityLabel.AutoSize = true;
-            this.mQualityLabel.Location = new System.Drawing.Point(200, 51);
+            this.mQualityLabel.Location = new System.Drawing.Point(205, 72);
             this.mQualityLabel.Name = "mQualityLabel";
-            this.mQualityLabel.Size = new System.Drawing.Size(35, 12);
+            this.mQualityLabel.Size = new System.Drawing.Size(41, 12);
             this.mQualityLabel.TabIndex = 0;
-            this.mQualityLabel.Text = "品质:";
+            this.mQualityLabel.Text = "品质：";
+            this.mQualityLabel.Click += new System.EventHandler(this.mQualityLabel_Click);
             // 
             // mCompressButton
             // 
-            this.mCompressButton.Location = new System.Drawing.Point(12, 410);
+            this.mCompressButton.Location = new System.Drawing.Point(12, 413);
             this.mCompressButton.Name = "mCompressButton";
             this.mCompressButton.Size = new System.Drawing.Size(678, 33);
             this.mCompressButton.TabIndex = 8;
@@ -314,11 +415,16 @@ namespace Dorisoy.BICompressor
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(678, 380);
+            this.tabControl1.Size = new System.Drawing.Size(678, 392);
             this.tabControl1.TabIndex = 11;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button2);
+            this.tabPage1.Controls.Add(this.textBox2);
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.radioButton2);
+            this.tabPage1.Controls.Add(this.radioButton1);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.mInputLabel);
             this.tabPage1.Controls.Add(this.mResolutionGroupBox);
@@ -333,14 +439,136 @@ namespace Dorisoy.BICompressor
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(670, 354);
+            this.tabPage1.Size = new System.Drawing.Size(670, 366);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "选项";
+            this.tabPage1.Text = "系统配置";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.radioButton7);
+            this.groupBox1.Controls.Add(this.radioButton6);
+            this.groupBox1.Controls.Add(this.radioButton5);
+            this.groupBox1.Controls.Add(this.radioButton4);
+            this.groupBox1.Controls.Add(this.radioButton3);
+            this.groupBox1.Controls.Add(this.radioButton8);
+            this.groupBox1.Controls.Add(this.radioButton9);
+            this.groupBox1.Location = new System.Drawing.Point(12, 171);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(646, 63);
+            this.groupBox1.TabIndex = 19;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "计划";
+            // 
+            // radioButton7
+            // 
+            this.radioButton7.AutoSize = true;
+            this.radioButton7.Enabled = false;
+            this.radioButton7.Location = new System.Drawing.Point(560, 29);
+            this.radioButton7.Name = "radioButton7";
+            this.radioButton7.Size = new System.Drawing.Size(59, 16);
+            this.radioButton7.TabIndex = 30;
+            this.radioButton7.Text = "星期天";
+            this.radioButton7.UseVisualStyleBackColor = true;
+            // 
+            // radioButton6
+            // 
+            this.radioButton6.AutoSize = true;
+            this.radioButton6.Enabled = false;
+            this.radioButton6.Location = new System.Drawing.Point(470, 29);
+            this.radioButton6.Name = "radioButton6";
+            this.radioButton6.Size = new System.Drawing.Size(59, 16);
+            this.radioButton6.TabIndex = 29;
+            this.radioButton6.Text = "星期六";
+            this.radioButton6.UseVisualStyleBackColor = true;
+            // 
+            // radioButton5
+            // 
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Enabled = false;
+            this.radioButton5.Location = new System.Drawing.Point(380, 29);
+            this.radioButton5.Name = "radioButton5";
+            this.radioButton5.Size = new System.Drawing.Size(59, 16);
+            this.radioButton5.TabIndex = 28;
+            this.radioButton5.Text = "星期五";
+            this.radioButton5.UseVisualStyleBackColor = true;
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Enabled = false;
+            this.radioButton4.Location = new System.Drawing.Point(290, 29);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(59, 16);
+            this.radioButton4.TabIndex = 27;
+            this.radioButton4.Text = "星期四";
+            this.radioButton4.UseVisualStyleBackColor = true;
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Enabled = false;
+            this.radioButton3.Location = new System.Drawing.Point(200, 29);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(59, 16);
+            this.radioButton3.TabIndex = 26;
+            this.radioButton3.Text = "星期三";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton8
+            // 
+            this.radioButton8.AutoSize = true;
+            this.radioButton8.Enabled = false;
+            this.radioButton8.Location = new System.Drawing.Point(110, 29);
+            this.radioButton8.Name = "radioButton8";
+            this.radioButton8.Size = new System.Drawing.Size(59, 16);
+            this.radioButton8.TabIndex = 25;
+            this.radioButton8.Text = "星期二";
+            this.radioButton8.UseVisualStyleBackColor = true;
+            // 
+            // radioButton9
+            // 
+            this.radioButton9.AutoSize = true;
+            this.radioButton9.Checked = true;
+            this.radioButton9.Enabled = false;
+            this.radioButton9.Location = new System.Drawing.Point(20, 29);
+            this.radioButton9.Name = "radioButton9";
+            this.radioButton9.Size = new System.Drawing.Size(59, 16);
+            this.radioButton9.TabIndex = 24;
+            this.radioButton9.TabStop = true;
+            this.radioButton9.Text = "星期一";
+            this.radioButton9.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.radioButton2.Location = new System.Drawing.Point(102, 24);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(71, 16);
+            this.radioButton2.TabIndex = 8;
+            this.radioButton2.Text = "自动模式";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.radioButton1.Checked = true;
+            this.radioButton1.Location = new System.Drawing.Point(12, 24);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(71, 16);
+            this.radioButton1.TabIndex = 7;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "普通模式";
+            this.radioButton1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(599, 13);
+            this.button1.Location = new System.Drawing.Point(598, 58);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(60, 23);
             this.button1.TabIndex = 6;
@@ -354,9 +582,9 @@ namespace Dorisoy.BICompressor
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(670, 354);
+            this.tabPage2.Size = new System.Drawing.Size(670, 366);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "文件";
+            this.tabPage2.Text = "文件队列";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
@@ -371,7 +599,7 @@ namespace Dorisoy.BICompressor
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(664, 348);
+            this.dataGridView1.Size = new System.Drawing.Size(664, 360);
             this.dataGridView1.TabIndex = 0;
             // 
             // name
@@ -402,7 +630,7 @@ namespace Dorisoy.BICompressor
             this.tabPage3.Controls.Add(this.textBox1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(670, 354);
+            this.tabPage3.Size = new System.Drawing.Size(670, 366);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "日志";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -414,12 +642,30 @@ namespace Dorisoy.BICompressor
             this.textBox1.Margin = new System.Windows.Forms.Padding(5);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(670, 354);
+            this.textBox1.Size = new System.Drawing.Size(670, 366);
             this.textBox1.TabIndex = 0;
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(197, 24);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(316, 21);
+            this.textBox2.TabIndex = 20;
+            this.textBox2.Text = "D:\\BIC-mon";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(535, 22);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(120, 23);
+            this.button2.TabIndex = 21;
+            this.button2.Text = "监控目录";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // BICompressor
             // 
@@ -430,17 +676,20 @@ namespace Dorisoy.BICompressor
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "BICompressor";
-            this.Text = "Batch Image Compressor";
+            this.Text = "Dorisoy.BICompressor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BICompressorForm_Closing);
             this.Load += new System.EventHandler(this.BICompressorForm_Load);
             this.mResolutionGroupBox.ResumeLayout(false);
             this.mResolutionGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mQualityTextBox)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage3.ResumeLayout(false);
@@ -457,9 +706,37 @@ namespace Dorisoy.BICompressor
 
             mParallelOptions = new ParallelOptions();
             mParallelOptions.MaxDegreeOfParallelism = Environment.ProcessorCount;
+            this.textBox2.Enabled = false;
+            this.button2.Enabled = false;
+            //
+            InitComBox();
 
             this.CenterToParent();
         }
+
+        private void InitComBox()
+        {
+            this.numericUpDown1.Value =0;
+
+            var mylist = new ArrayList();
+            for (var i = 0; i < 24; i++)
+            {
+                if (i >= 10)
+                    mylist.Add(new DictionaryEntry(string.Format("{0}:00", i), string.Format("{0}:00", i)));
+                else
+                    mylist.Add(new DictionaryEntry(string.Format("0{0}:00", i), string.Format("0{0}:00", i)));
+            }
+
+            if (mylist.Count > 0)
+            {
+                comboBox1.DataSource = mylist;
+                comboBox1.DisplayMember = "Value";
+                comboBox1.ValueMember = "Key";
+                comboBox1.SelectedIndex = 0;
+            }
+        }
+
+
 
         private void BICompressorForm_Closing(object sender, FormClosingEventArgs e)
         {
@@ -522,30 +799,234 @@ namespace Dorisoy.BICompressor
 
         private void CompressButton_Click(object sender, EventArgs e)
         {
+            string validationResult = ValidateUserInput();
+            if (!string.IsNullOrEmpty(validationResult))
+            {
+                MessageBox.Show(
+                    this,
+                    validationResult,
+                    msTitleBarText,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return;
+            }
+
+            var jobs = JobManager.AllSchedules;
+            if (!this.radioButton2.Checked && jobs.Count() == 0)
+            {
+                ProcessCompressor();
+            }
+            else
+            {
+                if (jobs.Count() == 0)
+                    RunAutoMode();
+                else
+                {
+                    LogText(DateTime.Now.ToString() + "  自动任务取消\n");
+
+                    JobManager.RemoveAllJobs();
+                    JobManager.Stop();
+
+                    if (mBackgroundWorker.IsBusy)
+                    {
+                        PromptCancel();
+                    }
+                    else
+                    {
+                        mCompressButton.Text = "开始";
+                    }
+                }
+            }
+        }
+
+        private void RunAutoMode()
+        {
+            if (comboBox1.SelectedValue != null)
+            {
+                Timer = comboBox1.SelectedValue.ToString();
+            }
+
+            this.TimeInterval = Convert.ToInt32(this.numericUpDown1.Value);
+
+            for (int i = 0; i < groupBox1.Controls.Count; i++)
+            {
+                if (groupBox1.Controls[i] is RadioButton)
+                {
+                    var temp = (RadioButton)groupBox1.Controls[i];
+                    if (temp.Checked)
+                    {
+                        switch (temp.Text)
+                        {
+                            case "星期一":
+                                Weekday = 1;
+                                break;
+                            case "星期二":
+                                Weekday = 2;
+                                break;
+                            case "星期三":
+                                Weekday = 3;
+                                break;
+                            case "星期四":
+                                Weekday = 4;
+                                break;
+                            case "星期五":
+                                Weekday = 5;
+                                break;
+                            case "星期六":
+                                Weekday = 6;
+                                break;
+                            case "星期天":
+                                Weekday = 7;
+                                break;
+                        }
+                    }
+                }
+            }
+
+            //开启自动任务
+            StartTask();
+        }
+
+
+        private void ProcessCompressor()
+        {
             if (mBackgroundWorker.IsBusy)
             {
                 PromptCancel();
             }
             else
             {
-                String validationResult = ValidateUserInput();
-                if (!String.IsNullOrEmpty(validationResult))
-                {
-                    MessageBox.Show(
-                        this,
-                        validationResult,
-                        msTitleBarText,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-
-                    return;
-                }
-
                 mBackgroundWorker.RunWorkerAsync();
                 mCompressButton.Text = "取消";
             }
         }
+
+
+        /// <summary>
+        /// 开始任务
+        /// </summary>
+        private void StartTask()
+        {
+            if (this.TimeInterval == 0 && Timer != "")
+            {
+                int hours = 0;
+                int minutes = 0;
+                var timeArry = Timer.Split(':');
+                if (timeArry.Length > 1)
+                {
+                    hours = Convert.ToInt32(timeArry[0]);
+                    minutes = Convert.ToInt32(timeArry[1]);
+                }
+                switch (Weekday)
+                {
+                    case 1:
+                        RunWeeksTask(DayOfWeek.Monday, hours, minutes);
+                        break;
+                    case 2:
+                        RunWeeksTask(DayOfWeek.Tuesday, hours, minutes);
+                        break;
+                    case 3:
+                        RunWeeksTask( DayOfWeek.Wednesday, hours, minutes);
+                        break;
+                    case 4:
+                        RunWeeksTask(DayOfWeek.Thursday, hours, minutes);
+                        break;
+                    case 5:
+                        RunWeeksTask( DayOfWeek.Friday, hours, minutes);
+                        break;
+                    case 6:
+                        RunWeeksTask( DayOfWeek.Saturday, hours, minutes);
+                        break;
+                    case 7:
+                        RunWeeksTask( DayOfWeek.Sunday, hours, minutes);
+                        break;
+                }
+            }
+            else
+            {
+                RunMinutesTask(TimeInterval);
+            }
+
+            JobManager.AddJob(() =>
+            {
+                this.Invoke((Action)(() =>
+                {
+                    LogText(DateTime.Now.ToString() + "  自动任务中...\n");
+
+                    this.mCompressButton.Text = $"监控中：{DateTime.Now.ToString("HH:mm:ss")}，点击可取消";
+                }));
+            }, t =>
+            {
+                t.ToRunNow().AndEvery(1).Seconds();
+            });
+
+            //启动
+            JobManager.Start();
+        }
+
+
+        /// <summary>
+        /// 按分钟执行
+        /// </summary>
+        /// <param name="timer"></param>
+        public void RunMinutesTask( int timer)
+        {
+            JobManager.AddJob(() =>
+            {
+                if (this.IsHandleCreated)
+                {
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        //获取监控目录文件
+                        foreach (var f in new DirectoryInfo(this.textBox2.Text).GetFiles())
+                        {
+                            //拷贝到待压缩目录
+                            f.CopyTo(this.mInputTextBox.Text + "\\" + f.Name, true);
+                        }
+
+                        //处理压缩
+                        ProcessCompressor();
+                    }));
+                }
+            }, t =>
+            {
+                t.ToRunNow().AndEvery(timer).Minutes();
+            });
+        }
+
+
+        /// <summary>
+        /// 按计划执行
+        /// </summary>
+        /// <param name="dayOfWeek"></param>
+        /// <param name="hours"></param>
+        /// <param name="minutes"></param>
+        public void RunWeeksTask(DayOfWeek dayOfWeek, int hours, int minutes)
+        {
+            JobManager.AddJob(() =>
+            {
+                if (this.IsHandleCreated)
+                {
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        //获取监控目录文件
+                        foreach (var f in new DirectoryInfo(this.textBox2.Text).GetFiles())
+                        {
+                            //拷贝到待压缩目录
+                            f.CopyTo(this.mInputTextBox.Text + "\\" + f.Name, true);
+                        }
+
+                        //处理压缩
+                        ProcessCompressor();
+                    }));
+                }
+            }, t =>
+            {
+                t.ToRunEvery(0).Weeks().On(DayOfWeek.Monday).At(hours, minutes);
+            });
+        }
+
 
         private void mBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -593,13 +1074,16 @@ namespace Dorisoy.BICompressor
                 RevomeSourcesFile();
             }
 
-            MessageBox.Show(
-                this,
-                message,
-                msTitleBarText,
-                MessageBoxButtons.OK,
-                icon
-            );
+            if (!this.radioButton2.Checked)
+            {
+                MessageBox.Show(
+                    this,
+                    message,
+                    msTitleBarText,
+                    MessageBoxButtons.OK,
+                    icon
+                );
+            }
 
             this.Text = msTitleBarText;
             mCompressButton.Text = "压缩";
@@ -630,10 +1114,17 @@ namespace Dorisoy.BICompressor
 
         private String ValidateUserInput()
         {
-            if (String.IsNullOrEmpty(mInputTextBox.Text))
+            if (this.radioButton2.Checked && String.IsNullOrEmpty(textBox2.Text))
             {
-                return "输入目录不能为空！请选择要压缩其图像的有效目录.";
+                return "自动模式下，请指定有效监控目标目录.";
             }
+
+            if (!Directory.Exists(textBox2.Text))
+            {
+                return "监控目标目录不存在.";
+            }
+
+
             if (!Directory.Exists(mInputTextBox.Text))
             {
                 return "文件目录不存在.";
@@ -722,7 +1213,7 @@ namespace Dorisoy.BICompressor
             mCompressedCount = 0;
         }
 
-        //progressBar1
+
         private void UpdateStatistics()
         {
             try
@@ -773,6 +1264,11 @@ namespace Dorisoy.BICompressor
         }
 
 
+        /// <summary>
+        /// 处理压缩
+        /// </summary>
+        /// <param name="outputDirectory"></param>
+        /// <param name="encoderParameters"></param>
         private void CompressFromSelect(string outputDirectory, EncoderParameters encoderParameters)
         {
             if (mBackgroundWorker.CancellationPending)
@@ -832,7 +1328,12 @@ namespace Dorisoy.BICompressor
             }
         }
 
-
+        /// <summary>
+        /// 处理压缩
+        /// </summary>
+        /// <param name="inputDirectory"></param>
+        /// <param name="outputDirectory"></param>
+        /// <param name="encoderParameters"></param>
         private void Compress(string inputDirectory, string outputDirectory, EncoderParameters encoderParameters)
         {
             if (mBackgroundWorker.CancellationPending)
@@ -886,6 +1387,13 @@ namespace Dorisoy.BICompressor
             }
         }
 
+        /// <summary>
+        /// 处理压缩
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="outputDirectory"></param>
+        /// <param name="encoderParameters"></param>
+        /// <param name="fname"></param>
         private void Compress(Image image, string outputDirectory, EncoderParameters encoderParameters, string fname = "")
         {
             int width = image.Width;
@@ -936,6 +1444,11 @@ namespace Dorisoy.BICompressor
             }
         }
 
+        /// <summary>
+        /// 调整
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         private void AdjustResolution(ref int width, ref int height)
         {
             if (mResolutionDimensionTextBox.Enabled)
@@ -969,6 +1482,10 @@ namespace Dorisoy.BICompressor
             }
         }
 
+        /// <summary>
+        /// 终止后台
+        /// </summary>
+        /// <returns></returns>
         private bool PromptCancel()
         {
             DialogResult cancelDialogResult = MessageBox.Show(
@@ -985,6 +1502,11 @@ namespace Dorisoy.BICompressor
                 mBackgroundWorker.CancelAsync();
                 mCompressButton.Text = "压缩";
             }
+
+
+            IsRunning = false;
+            LogText(DateTime.Now.ToString() + "  自动任务停止\r\n");
+            JobManager.Stop();
 
             return shouldCancel;
         }
@@ -1237,9 +1759,11 @@ namespace Dorisoy.BICompressor
             Application.DoEvents();
         }
 
-
-
-
+        /// <summary>
+        /// 格式化文件大小
+        /// </summary>
+        /// <param name="fileSize"></param>
+        /// <returns></returns>
         public string FormatFileSize(Int64 fileSize)
         {
             if (fileSize < 0)
@@ -1254,9 +1778,11 @@ namespace Dorisoy.BICompressor
                 return string.Format("{0} bytes", fileSize);
         }
 
-
-
-
+        /// <summary>
+        /// 更新GridView
+        /// </summary>
+        /// <param name="dataGridView"></param>
+        /// <param name="task"></param>
         public void InvokeUpdateGridView(DataGridView dataGridView, TaskFile task)
         {
             if (dataGridView.InvokeRequired)
@@ -1270,6 +1796,11 @@ namespace Dorisoy.BICompressor
             UpdateGridView(dataGridView, task);
         }
 
+        /// <summary>
+        /// 更新GridView
+        /// </summary>
+        /// <param name="dataGridView"></param>
+        /// <param name="task"></param>
         public void UpdateGridView(DataGridView dataGridView, TaskFile task)
         {
             try
@@ -1290,7 +1821,11 @@ namespace Dorisoy.BICompressor
             }
         }
 
-
+        /// <summary>
+        /// 更新GridView
+        /// </summary>
+        /// <param name="dataGridView"></param>
+        /// <param name="task"></param>
         public void InvokeRemoveGridView(DataGridView dataGridView, TaskFile task)
         {
             if (dataGridView.InvokeRequired)
@@ -1303,6 +1838,12 @@ namespace Dorisoy.BICompressor
             }
             RemoveGridView(dataGridView, task);
         }
+
+        /// <summary>
+        /// 更新GridView
+        /// </summary>
+        /// <param name="dataGridView"></param>
+        /// <param name="task"></param>
         public void RemoveGridView(DataGridView dataGridView, TaskFile task)
         {
             try
@@ -1318,6 +1859,93 @@ namespace Dorisoy.BICompressor
             catch (Exception ex)
             {
                 LogText(ex.Message + ";" + ex.StackTrace);
+            }
+        }
+
+        private void mQualityLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mQualityTextBox_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mInputLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            this.mCompressButton.Text = "压缩";
+            this.mInputLabel.Text = "压缩目录";
+            this.checkBox2.Checked = false;
+            this.radioButton9.Enabled = false;
+            this.textBox2.Enabled = false;
+            this.button2.Enabled = false;
+            this.button1.Enabled = true;
+            this.radioButton8.Enabled = false;
+            this.radioButton3.Enabled = false;
+            this.radioButton4.Enabled = false;
+            this.radioButton5.Enabled = false;
+            this.radioButton6.Enabled = false;
+            this.radioButton7.Enabled = false;
+            this.comboBox1.Enabled = false;
+            this.numericUpDown1.Enabled = false;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            this.mCompressButton.Text = "开始";
+            this.checkBox2.Checked = true;
+            this.textBox2.Enabled = true;
+            this.button2.Enabled = true;
+            this.mInputLabel.Text = "监控目录";
+            this.button1.Enabled = false;
+            this.radioButton9.Enabled = true;
+            this.radioButton8.Enabled = true;
+            this.radioButton3.Enabled = true;
+            this.radioButton4.Enabled = true;
+            this.radioButton5.Enabled = true;
+            this.radioButton6.Enabled = true;
+            this.radioButton7.Enabled = true;
+            this.comboBox1.Enabled = true;
+            this.numericUpDown1.Enabled = true;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(textBox2.Text))
+            {
+                mInputBrowseDialog.SelectedPath = textBox2.Text;
+            }
+
+            if (mInputBrowseDialog.ShowDialog() == DialogResult.OK)
+            {
+                textBox2.Text = mInputBrowseDialog.SelectedPath;
             }
         }
     }
