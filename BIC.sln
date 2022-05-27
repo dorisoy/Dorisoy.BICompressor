@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchImageCompressor", "BatchImageCompressor.csproj", "{9F6A98C7-2A2F-435C-B85A-0FD2AC067397}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dorisoy.BICompressor", "Dorisoy.BICompressor.csproj", "{9F6A98C7-2A2F-435C-B85A-0FD2AC067397}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F9976FE5-0701-4AA5-94BD-AAF3CFFA123A}
 	EndGlobalSection
 EndGlobal

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BatchImageCompressor
+namespace Dorisoy.BICompressor
 {
     static class Program
     {
@@ -14,7 +14,7 @@ namespace BatchImageCompressor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault( false );
-            Application.Run( new BatchImageCompressor() );
+            Application.Run( new BICompressor() );
         }
     }
 }

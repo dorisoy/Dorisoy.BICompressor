@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "BatchImageCompressor" )]
-[assembly: AssemblyDescription("Dorisoy")]
+[assembly: AssemblyTitle( "Dorisoy.BICompressor" )]
+[assembly: AssemblyDescription("Dorisoy.BIC")]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany("Dorisoy")]
-[assembly: AssemblyProduct( "BatchImageCompressor" )]
+[assembly: AssemblyCompany("Dorisoy.BIC")]
+[assembly: AssemblyProduct("Dorisoy.BIC")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("Dorisoy")]
 [assembly: AssemblyCulture( "" )]
