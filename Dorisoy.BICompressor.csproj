@@ -7,8 +7,8 @@
     <ProjectGuid>{9F6A98C7-2A2F-435C-B85A-0FD2AC067397}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BatchImageCompressor</RootNamespace>
-    <AssemblyName>BatchImageCompressor</AssemblyName>
+    <RootNamespace>Dorisoy.BICompressor</RootNamespace>
+    <AssemblyName>Dorisoy.BICompressor</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
