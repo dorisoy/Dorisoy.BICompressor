@@ -1070,13 +1070,33 @@ namespace Dorisoy.BICompressor
                 {
                     this.BeginInvoke(new Action(() =>
                     {
-                        //获取监控目录文件
-                        foreach (var f in new DirectoryInfo(this.txt_sourceFilePath.Text).GetFiles())
-                        {
-                            //拷贝到待压缩目录
-                            f.CopyTo(this.mInputTextBox.Text + "\\" + f.Name, true);
-                        }
+                        ////获取监控目录文件
+                        //foreach (var f in new DirectoryInfo(this.txt_sourceFilePath.Text).GetFiles())
+                        //{
+                        //    //拷贝到待压缩目录
+                        //    f.CopyTo(this.mInputTextBox.Text + "\\" + f.Name, true);
+                        //}
 
+                        var files = Directory.GetFiles(this.txt_sourceFilePath.Text, "*", SearchOption.AllDirectories);
+                        int fileCount = 0;
+                        foreach (string file in files)
+                        {
+                            //copy 指定数量文件到 mInputTextBox.Text  目录 
+                            FileInfo fileinfo = new FileInfo(file);
+                            if (AppConfig.GetFileExtensionNames().Contains(fileinfo.Extension.ToLower()))
+                            {
+                                if (fileinfo.Length >= (mud_fileLimitSize.Value * 1024))
+                                {
+                                    // 拷贝到待压缩目录
+                                    fileinfo.CopyTo(this.mInputTextBox.Text + "\\" + fileinfo.Name, true);
+                                    if (++fileCount >= pud_OnceOfQuantity.Value)
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+
+                        }
                         //处理压缩
                         ProcessCompressor();
                     }));
@@ -1109,10 +1129,24 @@ namespace Dorisoy.BICompressor
                         //    f.CopyTo(this.mInputTextBox.Text + "\\" + f.Name, true);
                         //}
                         var files = Directory.GetFiles(this.txt_sourceFilePath.Text, "*", SearchOption.AllDirectories);
-                        foreach (string f in files)
+                        int fileCount = 0;
+                        foreach (string file in files)
                         {
                             //copy 指定数量文件到 mInputTextBox.Text  目录 
-                            //判断文件大小copy文件
+                            FileInfo fileinfo = new FileInfo(file);
+                            if (AppConfig.GetFileExtensionNames().Contains(fileinfo.Extension.ToLower()))
+                            {
+                                if (fileinfo.Length>=( mud_fileLimitSize.Value*1024))
+                                {
+                                    // 拷贝到待压缩目录
+                                    fileinfo.CopyTo(this.mInputTextBox.Text + "\\" + fileinfo.Name, true);
+                                    if (++fileCount>= pud_OnceOfQuantity.Value)
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+
                         }
 
                         //处理压缩

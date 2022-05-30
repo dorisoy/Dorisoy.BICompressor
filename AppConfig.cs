@@ -26,6 +26,16 @@ namespace Dorisoy.BICompressor
             int.TryParse(GetAppSettingsKeyValue("FileLimitSize"), out fileLimitSize);
             return fileLimitSize;
         }
+        public static string[] GetFileExtensionNames()
+        {
+            if (null==FileExtensionNames)
+            {
+                string Extensions = GetAppSettingsKeyValue("FileExtensionNames");
+                FileExtensionNames= Extensions.Split(',');
+            }
+            return FileExtensionNames;
+        }
+        private static string[] FileExtensionNames;
 
         /// <summary>
         /// 获取AppSettings配置节中的Key值
