@@ -25,7 +25,13 @@ namespace Dorisoy.BICompressor
         private string Timer = "00:00";
         private int TimeInterval = 5;
         private Button button2;
-        private TextBox textBox2;
+        private TextBox txt_sourceFilePath;
+        private Label label4;
+        private NumericUpDown pud_OnceOfQuantity;
+        private Label label5;
+        private Label label6;
+        private NumericUpDown mud_fileLimitSize;
+        private Label label7;
         private int Weekday = 1;
 
         #region Public Methods
@@ -38,7 +44,7 @@ namespace Dorisoy.BICompressor
 
         private FolderBrowserDialog mProblematicBrowseDialog;
         private NumericUpDown mQualityTextBox;
-        private RadioButton radioButton2;
+        private RadioButton rb_autoCompress;
         private RadioButton radioButton1;
         private NumericUpDown numericUpDown1;
         private Label label2;
@@ -62,8 +68,6 @@ namespace Dorisoy.BICompressor
         #region Private Methods
         private void InitializeComponent()
         {
-
-
             this.mInputLabel = new System.Windows.Forms.Label();
             this.mInputTextBox = new System.Windows.Forms.TextBox();
             this.mInputBrowseButton = new System.Windows.Forms.Button();
@@ -77,6 +81,12 @@ namespace Dorisoy.BICompressor
             this.mProblematicBrowseButton = new System.Windows.Forms.Button();
             this.mProblematicBrowseDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.mResolutionGroupBox = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.mud_fileLimitSize = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.pud_OnceOfQuantity = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
@@ -96,6 +106,8 @@ namespace Dorisoy.BICompressor
             this.progressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
+            this.txt_sourceFilePath = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton7 = new System.Windows.Forms.RadioButton();
             this.radioButton6 = new System.Windows.Forms.RadioButton();
@@ -104,7 +116,7 @@ namespace Dorisoy.BICompressor
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton8 = new System.Windows.Forms.RadioButton();
             this.radioButton9 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.rb_autoCompress = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.button1 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -116,9 +128,9 @@ namespace Dorisoy.BICompressor
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
             this.mResolutionGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mud_fileLimitSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pud_OnceOfQuantity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mQualityTextBox)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -217,6 +229,12 @@ namespace Dorisoy.BICompressor
             // 
             // mResolutionGroupBox
             // 
+            this.mResolutionGroupBox.Controls.Add(this.label6);
+            this.mResolutionGroupBox.Controls.Add(this.mud_fileLimitSize);
+            this.mResolutionGroupBox.Controls.Add(this.label7);
+            this.mResolutionGroupBox.Controls.Add(this.label5);
+            this.mResolutionGroupBox.Controls.Add(this.pud_OnceOfQuantity);
+            this.mResolutionGroupBox.Controls.Add(this.label4);
             this.mResolutionGroupBox.Controls.Add(this.label3);
             this.mResolutionGroupBox.Controls.Add(this.numericUpDown1);
             this.mResolutionGroupBox.Controls.Add(this.label2);
@@ -232,15 +250,77 @@ namespace Dorisoy.BICompressor
             this.mResolutionGroupBox.Controls.Add(this.mQualityLabel);
             this.mResolutionGroupBox.Location = new System.Drawing.Point(14, 250);
             this.mResolutionGroupBox.Name = "mResolutionGroupBox";
-            this.mResolutionGroupBox.Size = new System.Drawing.Size(644, 99);
+            this.mResolutionGroupBox.Size = new System.Drawing.Size(644, 135);
             this.mResolutionGroupBox.TabIndex = 5;
             this.mResolutionGroupBox.TabStop = false;
             this.mResolutionGroupBox.Text = "选项";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(447, 70);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(41, 12);
+            this.label6.TabIndex = 21;
+            this.label6.Text = "KB压缩";
+            // 
+            // mud_fileLimitSize
+            // 
+            this.mud_fileLimitSize.Enabled = false;
+            this.mud_fileLimitSize.Location = new System.Drawing.Point(364, 67);
+            this.mud_fileLimitSize.Maximum = new decimal(new int[] {
+            102400,
+            0,
+            0,
+            0});
+            this.mud_fileLimitSize.Name = "mud_fileLimitSize";
+            this.mud_fileLimitSize.Size = new System.Drawing.Size(77, 21);
+            this.mud_fileLimitSize.TabIndex = 20;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(317, 69);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(41, 12);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "超过：";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(599, 38);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(17, 12);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "张";
+            // 
+            // pud_OnceOfQuantity
+            // 
+            this.pud_OnceOfQuantity.Enabled = false;
+            this.pud_OnceOfQuantity.Location = new System.Drawing.Point(542, 35);
+            this.pud_OnceOfQuantity.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this.pud_OnceOfQuantity.Name = "pud_OnceOfQuantity";
+            this.pud_OnceOfQuantity.Size = new System.Drawing.Size(54, 21);
+            this.pud_OnceOfQuantity.TabIndex = 17;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(481, 38);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 12);
+            this.label4.TabIndex = 16;
+            this.label4.Text = "每次处理：";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(582, 33);
+            this.label3.Location = new System.Drawing.Point(424, 37);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(35, 12);
             this.label3.TabIndex = 15;
@@ -250,16 +330,16 @@ namespace Dorisoy.BICompressor
             // numericUpDown1
             // 
             this.numericUpDown1.Enabled = false;
-            this.numericUpDown1.Location = new System.Drawing.Point(473, 31);
+            this.numericUpDown1.Location = new System.Drawing.Point(364, 33);
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(100, 21);
+            this.numericUpDown1.Size = new System.Drawing.Size(58, 21);
             this.numericUpDown1.TabIndex = 14;
             this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(385, 34);
+            this.label2.Location = new System.Drawing.Point(305, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 13;
@@ -270,15 +350,15 @@ namespace Dorisoy.BICompressor
             // 
             this.comboBox1.Enabled = false;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(252, 31);
+            this.comboBox1.Location = new System.Drawing.Point(230, 35);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(77, 20);
+            this.comboBox1.Size = new System.Drawing.Size(57, 20);
             this.comboBox1.TabIndex = 12;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(181, 39);
+            this.label1.Location = new System.Drawing.Point(158, 40);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 12);
             this.label1.TabIndex = 11;
@@ -287,9 +367,9 @@ namespace Dorisoy.BICompressor
             // 
             // mQualityTextBox
             // 
-            this.mQualityTextBox.Location = new System.Drawing.Point(252, 67);
+            this.mQualityTextBox.Location = new System.Drawing.Point(230, 63);
             this.mQualityTextBox.Name = "mQualityTextBox";
-            this.mQualityTextBox.Size = new System.Drawing.Size(77, 21);
+            this.mQualityTextBox.Size = new System.Drawing.Size(57, 21);
             this.mQualityTextBox.TabIndex = 10;
             this.mQualityTextBox.Value = new decimal(new int[] {
             60,
@@ -301,7 +381,7 @@ namespace Dorisoy.BICompressor
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(473, 67);
+            this.checkBox2.Location = new System.Drawing.Point(119, 103);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(168, 16);
             this.checkBox2.TabIndex = 9;
@@ -314,7 +394,7 @@ namespace Dorisoy.BICompressor
             this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(378, 68);
+            this.checkBox1.Location = new System.Drawing.Point(6, 103);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(72, 16);
             this.checkBox1.TabIndex = 8;
@@ -324,7 +404,7 @@ namespace Dorisoy.BICompressor
             // mResolutionPercentRadioButton
             // 
             this.mResolutionPercentRadioButton.AutoSize = true;
-            this.mResolutionPercentRadioButton.Location = new System.Drawing.Point(18, 35);
+            this.mResolutionPercentRadioButton.Location = new System.Drawing.Point(6, 35);
             this.mResolutionPercentRadioButton.Name = "mResolutionPercentRadioButton";
             this.mResolutionPercentRadioButton.Size = new System.Drawing.Size(71, 16);
             this.mResolutionPercentRadioButton.TabIndex = 3;
@@ -334,17 +414,17 @@ namespace Dorisoy.BICompressor
             // 
             // mResolutionDimensionTextBox
             // 
-            this.mResolutionDimensionTextBox.Location = new System.Drawing.Point(89, 67);
+            this.mResolutionDimensionTextBox.Location = new System.Drawing.Point(77, 67);
             this.mResolutionDimensionTextBox.MaxLength = 4;
             this.mResolutionDimensionTextBox.Name = "mResolutionDimensionTextBox";
-            this.mResolutionDimensionTextBox.Size = new System.Drawing.Size(70, 21);
+            this.mResolutionDimensionTextBox.Size = new System.Drawing.Size(57, 21);
             this.mResolutionDimensionTextBox.TabIndex = 5;
             // 
             // mResolutionDimensionRadioButton
             // 
             this.mResolutionDimensionRadioButton.AutoSize = true;
             this.mResolutionDimensionRadioButton.Checked = true;
-            this.mResolutionDimensionRadioButton.Location = new System.Drawing.Point(18, 68);
+            this.mResolutionDimensionRadioButton.Location = new System.Drawing.Point(6, 68);
             this.mResolutionDimensionRadioButton.Name = "mResolutionDimensionRadioButton";
             this.mResolutionDimensionRadioButton.Size = new System.Drawing.Size(71, 16);
             this.mResolutionDimensionRadioButton.TabIndex = 4;
@@ -356,16 +436,16 @@ namespace Dorisoy.BICompressor
             // mResolutionPercentTextBox
             // 
             this.mResolutionPercentTextBox.Enabled = false;
-            this.mResolutionPercentTextBox.Location = new System.Drawing.Point(89, 34);
+            this.mResolutionPercentTextBox.Location = new System.Drawing.Point(77, 34);
             this.mResolutionPercentTextBox.MaxLength = 3;
             this.mResolutionPercentTextBox.Name = "mResolutionPercentTextBox";
-            this.mResolutionPercentTextBox.Size = new System.Drawing.Size(70, 21);
+            this.mResolutionPercentTextBox.Size = new System.Drawing.Size(57, 21);
             this.mResolutionPercentTextBox.TabIndex = 6;
             // 
             // mQualityLabel
             // 
             this.mQualityLabel.AutoSize = true;
-            this.mQualityLabel.Location = new System.Drawing.Point(205, 72);
+            this.mQualityLabel.Location = new System.Drawing.Point(173, 69);
             this.mQualityLabel.Name = "mQualityLabel";
             this.mQualityLabel.Size = new System.Drawing.Size(41, 12);
             this.mQualityLabel.TabIndex = 0;
@@ -374,7 +454,7 @@ namespace Dorisoy.BICompressor
             // 
             // mCompressButton
             // 
-            this.mCompressButton.Location = new System.Drawing.Point(12, 413);
+            this.mCompressButton.Location = new System.Drawing.Point(9, 435);
             this.mCompressButton.Name = "mCompressButton";
             this.mCompressButton.Size = new System.Drawing.Size(678, 33);
             this.mCompressButton.TabIndex = 8;
@@ -395,7 +475,7 @@ namespace Dorisoy.BICompressor
             this.statusStrip1.AutoSize = false;
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.progressBar1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 457);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 471);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(696, 22);
             this.statusStrip1.SizingGrip = false;
@@ -415,15 +495,15 @@ namespace Dorisoy.BICompressor
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(678, 392);
+            this.tabControl1.Size = new System.Drawing.Size(678, 417);
             this.tabControl1.TabIndex = 11;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.button2);
-            this.tabPage1.Controls.Add(this.textBox2);
+            this.tabPage1.Controls.Add(this.txt_sourceFilePath);
             this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Controls.Add(this.radioButton2);
+            this.tabPage1.Controls.Add(this.rb_autoCompress);
             this.tabPage1.Controls.Add(this.radioButton1);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.mInputLabel);
@@ -439,10 +519,28 @@ namespace Dorisoy.BICompressor
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(670, 366);
+            this.tabPage1.Size = new System.Drawing.Size(670, 391);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "系统配置";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(535, 22);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(120, 23);
+            this.button2.TabIndex = 21;
+            this.button2.Text = "监控目录";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // txt_sourceFilePath
+            // 
+            this.txt_sourceFilePath.Location = new System.Drawing.Point(197, 24);
+            this.txt_sourceFilePath.Name = "txt_sourceFilePath";
+            this.txt_sourceFilePath.Size = new System.Drawing.Size(316, 21);
+            this.txt_sourceFilePath.TabIndex = 20;
+            this.txt_sourceFilePath.Text = "D:\\BIC-mon";
             // 
             // groupBox1
             // 
@@ -539,17 +637,17 @@ namespace Dorisoy.BICompressor
             this.radioButton9.Text = "星期一";
             this.radioButton9.UseVisualStyleBackColor = true;
             // 
-            // radioButton2
+            // rb_autoCompress
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.radioButton2.Location = new System.Drawing.Point(102, 24);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(71, 16);
-            this.radioButton2.TabIndex = 8;
-            this.radioButton2.Text = "自动模式";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            this.rb_autoCompress.AutoSize = true;
+            this.rb_autoCompress.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rb_autoCompress.Location = new System.Drawing.Point(102, 24);
+            this.rb_autoCompress.Name = "rb_autoCompress";
+            this.rb_autoCompress.Size = new System.Drawing.Size(71, 16);
+            this.rb_autoCompress.TabIndex = 8;
+            this.rb_autoCompress.Text = "自动模式";
+            this.rb_autoCompress.UseVisualStyleBackColor = true;
+            this.rb_autoCompress.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             // 
             // radioButton1
             // 
@@ -582,7 +680,7 @@ namespace Dorisoy.BICompressor
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(670, 366);
+            this.tabPage2.Size = new System.Drawing.Size(670, 391);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "文件队列";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -599,7 +697,7 @@ namespace Dorisoy.BICompressor
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(664, 360);
+            this.dataGridView1.Size = new System.Drawing.Size(664, 385);
             this.dataGridView1.TabIndex = 0;
             // 
             // name
@@ -630,7 +728,7 @@ namespace Dorisoy.BICompressor
             this.tabPage3.Controls.Add(this.textBox1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(670, 366);
+            this.tabPage3.Size = new System.Drawing.Size(670, 391);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "日志";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -642,34 +740,16 @@ namespace Dorisoy.BICompressor
             this.textBox1.Margin = new System.Windows.Forms.Padding(5);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(670, 366);
+            this.textBox1.Size = new System.Drawing.Size(670, 391);
             this.textBox1.TabIndex = 0;
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(197, 24);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(316, 21);
-            this.textBox2.TabIndex = 20;
-            this.textBox2.Text = "D:\\BIC-mon";
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(535, 22);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(120, 23);
-            this.button2.TabIndex = 21;
-            this.button2.Text = "监控目录";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // BICompressor
             // 
-            this.ClientSize = new System.Drawing.Size(696, 479);
+            this.ClientSize = new System.Drawing.Size(696, 493);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.mCompressButton);
@@ -681,6 +761,8 @@ namespace Dorisoy.BICompressor
             this.Load += new System.EventHandler(this.BICompressorForm_Load);
             this.mResolutionGroupBox.ResumeLayout(false);
             this.mResolutionGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mud_fileLimitSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pud_OnceOfQuantity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mQualityTextBox)).EndInit();
             this.statusStrip1.ResumeLayout(false);
@@ -706,12 +788,22 @@ namespace Dorisoy.BICompressor
 
             mParallelOptions = new ParallelOptions();
             mParallelOptions.MaxDegreeOfParallelism = Environment.ProcessorCount;
-            this.textBox2.Enabled = false;
+            this.txt_sourceFilePath.Enabled = false;
             this.button2.Enabled = false;
             //
             InitComBox();
 
+
+            //load once of quantity
+            int onceOfQuantity= AppConfig.GetOnceOfQuantity();
+            this.pud_OnceOfQuantity.Value= onceOfQuantity;
+
+            //load fileLimitSize
+            int fileLimitSize = AppConfig.GetFileLimitSize();
+            this.mud_fileLimitSize.Value = fileLimitSize;
+
             this.CenterToParent();
+
         }
 
         private void InitComBox()
@@ -813,7 +905,7 @@ namespace Dorisoy.BICompressor
             }
 
             var jobs = JobManager.AllSchedules;
-            if (!this.radioButton2.Checked && jobs.Count() == 0)
+            if (!this.rb_autoCompress.Checked && jobs.Count() == 0)
             {
                 ProcessCompressor();
             }
@@ -979,7 +1071,7 @@ namespace Dorisoy.BICompressor
                     this.BeginInvoke(new Action(() =>
                     {
                         //获取监控目录文件
-                        foreach (var f in new DirectoryInfo(this.textBox2.Text).GetFiles())
+                        foreach (var f in new DirectoryInfo(this.txt_sourceFilePath.Text).GetFiles())
                         {
                             //拷贝到待压缩目录
                             f.CopyTo(this.mInputTextBox.Text + "\\" + f.Name, true);
@@ -1011,10 +1103,16 @@ namespace Dorisoy.BICompressor
                     this.BeginInvoke(new Action(() =>
                     {
                         //获取监控目录文件
-                        foreach (var f in new DirectoryInfo(this.textBox2.Text).GetFiles())
+                        //foreach (var f in new DirectoryInfo(this.txt_sourceFilePath.Text).GetFiles())
+                        //{
+                        //    //拷贝到待压缩目录
+                        //    f.CopyTo(this.mInputTextBox.Text + "\\" + f.Name, true);
+                        //}
+                        var files = Directory.GetFiles(this.txt_sourceFilePath.Text, "*", SearchOption.AllDirectories);
+                        foreach (string f in files)
                         {
-                            //拷贝到待压缩目录
-                            f.CopyTo(this.mInputTextBox.Text + "\\" + f.Name, true);
+                            //copy 指定数量文件到 mInputTextBox.Text  目录 
+                            //判断文件大小copy文件
                         }
 
                         //处理压缩
@@ -1074,7 +1172,7 @@ namespace Dorisoy.BICompressor
                 RevomeSourcesFile();
             }
 
-            if (!this.radioButton2.Checked)
+            if (!this.rb_autoCompress.Checked)
             {
                 MessageBox.Show(
                     this,
@@ -1114,12 +1212,12 @@ namespace Dorisoy.BICompressor
 
         private String ValidateUserInput()
         {
-            if (this.radioButton2.Checked && String.IsNullOrEmpty(textBox2.Text))
+            if (this.rb_autoCompress.Checked && String.IsNullOrEmpty(txt_sourceFilePath.Text))
             {
                 return "自动模式下，请指定有效监控目标目录.";
             }
 
-            if (!Directory.Exists(textBox2.Text))
+            if (!Directory.Exists(txt_sourceFilePath.Text))
             {
                 return "监控目标目录不存在.";
             }
@@ -1904,7 +2002,7 @@ namespace Dorisoy.BICompressor
             this.mInputLabel.Text = "压缩目录";
             this.checkBox2.Checked = false;
             this.radioButton9.Enabled = false;
-            this.textBox2.Enabled = false;
+            this.txt_sourceFilePath.Enabled = false;
             this.button2.Enabled = false;
             this.button1.Enabled = true;
             this.radioButton8.Enabled = false;
@@ -1921,7 +2019,7 @@ namespace Dorisoy.BICompressor
         {
             this.mCompressButton.Text = "开始";
             this.checkBox2.Checked = true;
-            this.textBox2.Enabled = true;
+            this.txt_sourceFilePath.Enabled = true;
             this.button2.Enabled = true;
             this.mInputLabel.Text = "监控目录";
             this.button1.Enabled = false;
@@ -1938,26 +2036,17 @@ namespace Dorisoy.BICompressor
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (Directory.Exists(textBox2.Text))
+            if (Directory.Exists(txt_sourceFilePath.Text))
             {
-                mInputBrowseDialog.SelectedPath = textBox2.Text;
+                mInputBrowseDialog.SelectedPath = txt_sourceFilePath.Text;
             }
 
             if (mInputBrowseDialog.ShowDialog() == DialogResult.OK)
             {
-                textBox2.Text = mInputBrowseDialog.SelectedPath;
+                txt_sourceFilePath.Text = mInputBrowseDialog.SelectedPath;
             }
         }
+
     }
 
-
-
-    public class TaskFile
-    {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string Name { get; set; }
-        public string Size { get; set; }
-        public string Status { get; set; }
-        public string Path { get; set; }
-    }
 }
