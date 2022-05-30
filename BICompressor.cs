@@ -1089,7 +1089,7 @@ namespace Dorisoy.BICompressor
                                 {
                                     // 拷贝到待压缩目录
                                     fileinfo.CopyTo(this.mInputTextBox.Text + "\\" + fileinfo.Name, true);
-                                    if (++fileCount >= pud_OnceOfQuantity.Value)
+                                    if (pud_OnceOfQuantity.Value >0&& ++fileCount >= pud_OnceOfQuantity.Value)
                                     {
                                         break;
                                     }
@@ -1140,7 +1140,7 @@ namespace Dorisoy.BICompressor
                                 {
                                     // 拷贝到待压缩目录
                                     fileinfo.CopyTo(this.mInputTextBox.Text + "\\" + fileinfo.Name, true);
-                                    if (++fileCount>= pud_OnceOfQuantity.Value)
+                                    if (pud_OnceOfQuantity.Value > 0 && ++fileCount >= pud_OnceOfQuantity.Value)
                                     {
                                         break;
                                     }
