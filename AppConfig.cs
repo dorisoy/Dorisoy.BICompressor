@@ -20,12 +20,22 @@ namespace Dorisoy.BICompressor
             return onceOfQuantity;
         }
 
+
+        public static string GetFileOutPutPath()
+        {
+            return GetAppSettingsKeyValue("OutPutPath");
+        }
+
+
         public static int GetFileLimitSize()
         {
             int fileLimitSize = 1024;
             int.TryParse(GetAppSettingsKeyValue("FileLimitSize"), out fileLimitSize);
             return fileLimitSize;
         }
+
+
+
         public static string[] GetFileExtensionNames()
         {
             if (null==FileExtensionNames)

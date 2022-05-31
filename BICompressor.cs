@@ -795,12 +795,14 @@ namespace Dorisoy.BICompressor
 
 
             //load once of quantity
-            int onceOfQuantity= AppConfig.GetOnceOfQuantity();
-            this.pud_OnceOfQuantity.Value= onceOfQuantity;
+            this.pud_OnceOfQuantity.Value= AppConfig.GetOnceOfQuantity();
 
             //load fileLimitSize
-            int fileLimitSize = AppConfig.GetFileLimitSize();
-            this.mud_fileLimitSize.Value = fileLimitSize;
+            this.mud_fileLimitSize.Value = AppConfig.GetFileLimitSize();
+
+            //load file out put path
+            mOutputTextBox.Text = AppConfig.GetFileOutPutPath();
+
 
             this.CenterToParent();
 
@@ -975,7 +977,6 @@ namespace Dorisoy.BICompressor
                     }
                 }
             }
-
             //开启自动任务
             StartTask();
         }
@@ -1089,6 +1090,16 @@ namespace Dorisoy.BICompressor
                                 {
                                     // 拷贝到待压缩目录
                                     fileinfo.CopyTo(this.mInputTextBox.Text + "\\" + fileinfo.Name, true);
+
+                                    var tf = new TaskFile()
+                                    {
+                                        Name = fileinfo.Name,
+                                        Size = FormatFileSize(fileinfo.Length),
+                                        Status = "等待",
+                                        Path = file,
+                                        Directory= fileinfo.DirectoryName
+                                    };
+                                    TaskFiles.Enqueue(tf);
                                     if (pud_OnceOfQuantity.Value >0&& ++fileCount >= pud_OnceOfQuantity.Value)
                                     {
                                         break;
@@ -1262,11 +1273,11 @@ namespace Dorisoy.BICompressor
                 return "文件目录不存在.";
             }
                  
-            if (String.IsNullOrEmpty(mOutputTextBox.Text))
-            {
-                return "输出目录不能为空！请选择要存储压缩图像的有效目录.";
-            }
-            if (!Directory.Exists(mOutputTextBox.Text))
+            //if (String.IsNullOrEmpty(mOutputTextBox.Text))
+            //{
+            //    return "输出目录不能为空！请选择要存储压缩图像的有效目录.";
+            //}
+            if (!String.IsNullOrEmpty(mOutputTextBox.Text) && !Directory.Exists(mOutputTextBox.Text))
             {
                 return "输出目录不存在.";
             }
@@ -1280,7 +1291,7 @@ namespace Dorisoy.BICompressor
                 return "转移目录不存在.";
             }
 
-            if (Directory.EnumerateFileSystemEntries(mOutputTextBox.Text).GetEnumerator().MoveNext() && !this.checkBox1.Checked)
+            if (!String.IsNullOrEmpty(mOutputTextBox.Text)&& Directory.EnumerateFileSystemEntries(mOutputTextBox.Text).GetEnumerator().MoveNext() && !this.checkBox1.Checked)
             {
                 return "为避免覆盖现有文件，输出目录必须为空。";
             }
@@ -1409,49 +1420,50 @@ namespace Dorisoy.BICompressor
             }
 
             mParallelOptions.MaxDegreeOfParallelism = 5;
-            Parallel.ForEach(
-                this.TaskFiles,
-                mParallelOptions,
-                (file, loop) =>
-                {
-                    if (mBackgroundWorker.CancellationPending)
-                    {
-                        loop.Stop();
-                    }
+            Parallel.ForEach(this.TaskFiles, mParallelOptions, (file, loop) =>
+                  {
+                      if (mBackgroundWorker.CancellationPending)
+                      {
+                          loop.Stop();
+                      }
 
-                    try
-                    {
-                        using (Image image = Image.FromFile(file.Path))
-                        {
-                            Compress(image, outputDirectory, encoderParameters, file.Name);
-                            
+                      try
+                      {
+                          using (Image image = Image.FromFile(file.Path))
+                          {
+                              if (string.IsNullOrEmpty(outputDirectory))
+                              {
+                                  outputDirectory = file.Directory;
+                              }
+                              Compress(image, outputDirectory, encoderParameters, file.Name);
+
                             //报告进度
                             UpdateStatistics();
 
-                            LogText($"压缩{file.Path}");
-                        }
-                    }
-                    catch (Exception exx)
-                    {
-                        System.Diagnostics.Debug.Print(exx.Message);
+                              LogText($"压缩{file.Path}");
+                          }
+                      }
+                      catch (Exception exx)
+                      {
+                          System.Diagnostics.Debug.Print(exx.Message);
 
 
-                        LogText($"处理失败 {exx.Message}  with  {file.Path}");
-                        File.Copy(file.Path,
-                            Path.Combine(mProblematicTextBox.Text, Path.GetFileName(file.Path)),
-                            this.checkBox1.Checked);
-                    }
-                    finally 
-                    {
+                          LogText($"处理失败 {exx.Message}  with  {file.Path}");
+                          File.Copy(file.Path,
+                              Path.Combine(mProblematicTextBox.Text, Path.GetFileName(file.Path)),
+                              this.checkBox1.Checked);
+                      }
+                      finally
+                      {
                         //更新GridView
                         Task.Run(() =>
-                        {
+                          {
                             //this.TaskFiles.TryDequeue(out TaskFile t);
                             LogText($"更新GridView {file.Name}");
-                            InvokeRemoveGridView(this.dataGridView1, file);
-                        });
-                    }
-                }
+                              InvokeRemoveGridView(this.dataGridView1, file);
+                          });
+                      }
+                  }
             );
 
             if (mBackgroundWorker.CancellationPending)
@@ -1567,11 +1579,8 @@ namespace Dorisoy.BICompressor
                     );
 
                     var name = string.IsNullOrEmpty(fname) ? GetImageName(image) : fname;
-                    bitmap.Save(
-                        Path.Combine(outputDirectory, name),
-                        msImageCodecInfo,
-                        encoderParameters
-                    );
+                    string fielAllName = Path.Combine(outputDirectory, name);
+                    bitmap.Save(fielAllName,msImageCodecInfo,encoderParameters);
                 }
             }
         }
